@@ -1,0 +1,98 @@
+---
+title: "Stats506_PS3"
+format:
+  html:
+    embed-resources: true
+editor: visual
+---
+
+# Problem 1 - Vision
+
+### Part A:
+
+I will download the VIX_D file and DEMO_D file. I will merge the two files to create a single Stata dataset, using the SEQN variable for merging. I will keep only records which match. Below I will print my total size, showing that it is now 6,980.
+
+### Part B:
+
+Without fitting any models, I will estimate the proportion of respondents within each 10-year age bracket (eg. 0-9, 10-19, 20-29, etc) who wear glasses/contact lenses for distance vision. I will produce a nice table with the results below. (There was hint)
+
+### Part C:
+
+Fit three logistic regression models predicting whether a respondent wears glasses/contact lenses for distance vision. Predictors:
+
+1.  age
+2.  age, race, gender
+3.  age, race, gender, poverty income ratio
+
+Next, I will produce a table presenting the estimated odds ratios for the coefficients in each model along with the sample size for the model, the pseud-R\^2, and AIC values.
+
+### Part D:
+
+From the third model from the previous part, I will discuss whether the *odds* of men and women being wears of glasses/contact lenses for distance vision differ. I will test whether the *proportion* of wearers of glasses/contact lenses for distance vision differs between men and women. I will include the results of the test and its interpretation.
+
+# Problem 2 - Sakila
+
+Load the "sakila" database discussed in class into SQLite. It can be downloaded from the link provided.
+
+```{r}
+library(DBI)
+library(RSQLite)
+```
+
+```{r}
+#Load the "sakila" database into SQLite
+sakila <- dbConnect(RSQLite::SQLite(), "/Users/19892/OneDrive/Documents/STATS506/ProblemSets/Stats506_PS3/sakila_master.db")
+```
+
+### Part A:
+
+Aside from English, what language is most common for films? Answer this with a a single SQL query.
+
+To get a feel for the data base, here are the table names
+
+```{r}
+dbListTables(sakila)
+```
+
+Below are the languages:
+
+```{r}
+dbListFields(sakila, "language")
+dbGetQuery(sakila, "SELECT name FROM language")
+dbGetQuery(sakila, "SELECT language_id from language")
+```
+
+```{r}
+dbGetQuery(sakila,"
+  SELECT language_id, COUNT(*) AS language_count
+    FROM film
+    GROUP BY language_id
+    ORDER BY language_count DESC
+           "
+           )
+```
+
+Above it seems that every film has a language id of 1 which corresponds to English. Therefore, every film was done in English and English is the most common language.
+
+*For each of the following questions, solve them in two ways: First, use SQL query or queries to extract the appropriate table(s), then use regular R to answer the question. Second, use a single SQL query to answer the question.*
+
+### Part B: What genre of movie is the most common in the data, and how many movies are of this genre?
+
+SQL:
+
+```{r}
+dbListFields(sakila, "film_category")
+dbGetQuery(sakila, "SELECT name FROM category")
+```
+
+```{r}
+dbGetQuery(sakila,"
+  SELECT category_id, COUNT(*) AS genre_count
+    FROM film_category
+    GROUP BY category_id
+    ORDER BY genre_count DESC
+           "
+           )
+```
+
+\*How do I do the next step- category id with genre name?
