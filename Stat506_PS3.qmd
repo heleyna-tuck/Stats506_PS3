@@ -244,9 +244,17 @@ Above we apply the function using sapply() on the emails in the data and return 
 
 ### Part C: What is the most common area code amonst all phone numbers?
 
-```{r}
+Below I will use the str_extract() function from the stringr package (found in https://stackoverflow.com/questions/64580834/extracting-area-codes-using-extract-on-r)
 
+```{r}
+library(stringr)
+area_codes <- str_extract(us_500$phone1, "\\d{3}")
+area_codes_all <- append(area_codes, str_extract(us_500$phone2, "\\d{3}"))
+
+sort(table(area_codes_all), decreasing = TRUE)[1]
 ```
+
+Above, get a list of all the area codes from both the phone1 and phone2 variables (area_codes_all). I get a table of all the area codes and their counts and sort them with the highest count at the top. Therefore, we get that the most common area code is (973) shown above.
 
 ### Part D: Produce a histogram of the log of the apartment numbers for all addresses. (You may assume any number after the street is an apartment number.)
 
