@@ -129,10 +129,50 @@ LIMIT 1
 ")
 ```
 
-Above, in a single SQL query, I have also found that the most popular genre of film is sports.
+We get the name of the genre with the category table using most_common_genre. We count the number of movies in each genre using the film table along with the film_category and category tables and grouping the results using GROUP BY. Order the movie counts using ORDER BY, LIMIT 1 gets the top genre count.
+
+Above, in a single SQL query, I have also found that the most popular genre of film is sports with 74 movies.
 
 ### Part C: Identify which country or countries have exactly 9 customers. Answer this with a single SQL query. 
 
-```{r}
+Below I will solve the question using the first way described: Using SQL query or queries to extract the appropriate table(s), then use regular R to answer the question.
 
+```{r}
+customer_data <- dbGetQuery(sakila, "
+  SELECT country.country, COUNT(*) AS customer_count
+  FROM country
+  INNER JOIN city ON country.country_id = city.country_id
+  INNER JOIN address ON city.city_id = address.city_id
+  INNER JOIN customer ON address.address_id = customer.address_id
+  GROUP BY country.country
+                            ")
 ```
+
+Print the customer_data table that the above query achieves below and answer the question, which country has a customer_count of 9:
+
+```{r}
+customer_data
+```
+
+```{r}
+nine_customers <- customer_data[customer_data$customer_count ==9, ]
+nine_customers
+```
+
+Above we can see that the one country that has a customer_count of 9 is the United Kingdom.
+
+Below I will answer the question with a single SQL query:
+
+```{r}
+dbGetQuery(sakila, "
+SELECT country.country, COUNT(*) AS customer_count 
+FROM country
+INNER JOIN city ON country.country_id = city.country_id
+INNER JOIN address ON city.city_id = address.city_id
+INNER JOIN customer ON address.address_id = customer.address_id
+GROUP BY country.country
+HAVING customer_count = 9
+           ")
+```
+
+We use customer_count to count how many customers are in each country. We do this using a series of INNER JOIN shown above. As a result, we get that the United Kingdom was the only country with a customer count of 9.
