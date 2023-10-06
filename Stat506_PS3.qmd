@@ -64,15 +64,18 @@ dbGetQuery(sakila, "SELECT language_id from language")
 
 ```{r}
 dbGetQuery(sakila,"
-  SELECT language_id, COUNT(*) AS language_count
-    FROM film
-    GROUP BY language_id
-    ORDER BY language_count DESC
+SELECT language.name AS most_common_language, COUNT(*) AS film_count
+FROM film
+INNER JOIN language ON film.language_id = language.language_id
+WHERE language.name != 'English'
+GROUP BY language.name
+ORDER BY film_count DESC
+LIMIT 1
            "
            )
 ```
 
-Above it seems that every film has a language id of 1 which corresponds to English. Therefore, every film was done in English and English is the most common language.
+Above we get that there are no films with the language being something other than English. Therefore, English is the only language being used in this database and therefore is the most popular
 
 *For each of the following questions, solve them in two ways: First, use SQL query or queries to extract the appropriate table(s), then use regular R to answer the question. Second, use a single SQL query to answer the question.*
 
@@ -80,10 +83,14 @@ Above it seems that every film has a language id of 1 which corresponds to Engli
 
 SQL:
 
+Multiple Queries: First I will print out all the genres to get a feel with what options we have below:
+
 ```{r}
 dbListFields(sakila, "film_category")
 dbGetQuery(sakila, "SELECT name FROM category")
 ```
+
+Below, COUNT and GROUP BY/ORDER BY prints me out a table that gives each category_id (like the genre id) and the count of each, ORDER BY puts the counts in order, wit the category_id of 15 being at the top of the count.
 
 ```{r}
 dbGetQuery(sakila,"
@@ -95,4 +102,37 @@ dbGetQuery(sakila,"
            )
 ```
 
-\*How do I do the next step- category id with genre name?
+Below I will find which genre has the category_id of 15:
+
+```{r}
+dbGetQuery(sakila,"
+  SELECT category.name AS genre_count
+      FROM category
+      WHERE category.category_id = 15
+           "
+           )
+```
+
+Above, we can see that the category_id of the most popular genre of the films in this database is sports.
+
+Below, I will answer the same question with a single query:
+
+```{r}
+dbGetQuery(sakila, "
+SELECT category.name AS most_common_genre, COUNT(*) AS movie_count
+FROM film
+INNER JOIN film_category ON film.film_id = film_category.film_id
+INNER JOIN category ON film_category.category_id = category.category_id
+GROUP BY category.name
+ORDER BY movie_count DESC
+LIMIT 1
+")
+```
+
+Above, in a single SQL query, I have also found that the most popular genre of film is sports.
+
+### Part C: Identify which country or countries have exactly 9 customers. Answer this with a single SQL query. 
+
+```{r}
+
+```
