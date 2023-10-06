@@ -12,9 +12,15 @@ editor: visual
 
 I will download the VIX_D file and DEMO_D file. I will merge the two files to create a single Stata dataset, using the SEQN variable for merging. I will keep only records which match. Below I will print my total size, showing that it is now 6,980.
 
+```         
+```
+
 ### Part B:
 
 Without fitting any models, I will estimate the proportion of respondents within each 10-year age bracket (eg. 0-9, 10-19, 20-29, etc) who wear glasses/contact lenses for distance vision. I will produce a nice table with the results below. (There was hint)
+
+```         
+```
 
 ### Part C:
 
@@ -26,9 +32,15 @@ Fit three logistic regression models predicting whether a respondent wears glass
 
 Next, I will produce a table presenting the estimated odds ratios for the coefficients in each model along with the sample size for the model, the pseud-R\^2, and AIC values.
 
+```         
+```
+
 ### Part D:
 
 From the third model from the previous part, I will discuss whether the *odds* of men and women being wears of glasses/contact lenses for distance vision differ. I will test whether the *proportion* of wearers of glasses/contact lenses for distance vision differs between men and women. I will include the results of the test and its interpretation.
+
+```         
+```
 
 # Problem 2 - Sakila
 
@@ -173,3 +185,43 @@ dbGetQuery(sakila, "
 ```
 
 We use customer_count to count how many customers are in each country. We do this using a series of INNER JOIN shown above. As a result, we get that the United Kingdom was the only country with a customer count of 9.
+
+# Problem 3 - US Records
+
+Download the "US - 500 Records" data from the link provided and import it into R below. (This is fake data) and answer the question below:
+
+### Part A: What proportion of email addresses are hosted at a domain with TLD ".net"? (E.g. in the email, "angrycat\@freemail.org", "freemail.org" is the domain, with TLD (top-level domain) ".org".)
+
+```{r}
+
+```
+
+### Part B: What proportion of email addresses have at least one non alphanumeric character in them?
+
+```{r}
+
+```
+
+### Part C: What is the most common area code amonst all phone numbers?
+
+```{r}
+
+```
+
+### Part D: Produce a histogram of the log of the apartment numbers for all addresses. (You may assume any number after the street is an apartment number.)
+
+```{r}
+
+```
+
+### Part E: Benford's law is an observation about the distribution of the leading digit of real numerical data. Examine whether the apartment numbers appear to follow Benford's law. Do you thing the apartment numbers would pass as real data? 
+
+```{r}
+
+```
+
+### Part F: Repeat your analysis of Benford's law on the *last* digit of the street number (E.g. if your address is "123 Main St #25", your street number is "123".)
+
+```{r}
+
+```
