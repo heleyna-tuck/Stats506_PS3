@@ -190,11 +190,30 @@ We use customer_count to count how many customers are in each country. We do thi
 
 Download the "US - 500 Records" data from the link provided and import it into R below. (This is fake data) and answer the question below:
 
+Import Data Below:
+
+```{r}
+library(tidyverse)
+us_500 <- read_csv('/Users/19892/OneDrive/Documents/STATS506/ProblemSets/Stats506_PS3/us-500.csv')
+```
+
+Below is the first several rows of the data set to get an idea with what we're working with:
+
+```{r}
+head(us_500)
+```
+
 ### Part A: What proportion of email addresses are hosted at a domain with TLD ".net"? (E.g. in the email, "angrycat\@freemail.org", "freemail.org" is the domain, with TLD (top-level domain) ".org".)
 
 ```{r}
-
+library(urltools)
+tlds <- tld_extract(us_500$email)
+tld_with_net <- tlds[which(tlds$tld == "net"),]
+prop <- nrow(tld_with_net)/nrow(tlds)
+paste("Proportion of email addresses hosted at a domain with TLD .net:", prop)
 ```
+
+Above, I used the tld_extract function from urltools (found in this link https://search.r-project.org/CRAN/refmans/urltools/html/tld_extract.html) to get the tlds from each email and the which() function to extract all tlds with ".net" to finally get the proportion of 0.14.
 
 ### Part B: What proportion of email addresses have at least one non alphanumeric character in them?
 
