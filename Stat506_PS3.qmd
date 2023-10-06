@@ -218,8 +218,29 @@ Above, I used the tld_extract function from urltools (found in this link https:/
 ### Part B: What proportion of email addresses have at least one non alphanumeric character in them?
 
 ```{r}
-
+#' Title: Fucntion to take in an email and return a TRUE/FALSE depending on if it has an non-alphanumeric character or not.
+#'
+#' @param email is the given email the function is checking.
+#'
+#' @return TRUE/FALSE, TRUE if the email does contain at least one non-alpha numeric characters, FALSE if they do not. 
+#' @export
+#'
+#' @examples
+non_alphanum <- function(email){
+  email <- gsub("[@.]", "", email)
+  grepl("[^A-Za-z0-9]", email)
+}
 ```
+
+Above, gsub() substitutes @ or . with nothing to make sure the grepl() function does not identify those as non-aphanumeric characters. grepl() checks if there is a non- alphanumeric character in the email.
+
+```{r}
+non_alphanum_emails <- sapply(us_500$email, non_alphanum)
+prop <- mean(non_alphanum_emails)
+prop
+```
+
+Above we apply the function using sapply() on the emails in the data and return the proportion which is 0.248 of characters that have non-alphanumeric characters in them.
 
 ### Part C: What is the most common area code amonst all phone numbers?
 
