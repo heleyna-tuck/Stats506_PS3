@@ -90,30 +90,27 @@ dbListFields(sakila, "film_category")
 dbGetQuery(sakila, "SELECT name FROM category")
 ```
 
-Below, COUNT and GROUP BY/ORDER BY prints me out a table that gives each category_id (like the genre id) and the count of each, ORDER BY puts the counts in order, wit the category_id of 15 being at the top of the count.
-
 ```{r}
-dbGetQuery(sakila,"
-  SELECT category_id, COUNT(*) AS genre_count
-    FROM film_category
-    GROUP BY category_id
-    ORDER BY genre_count DESC
+count <- dbGetQuery(sakila,"
+SELECT category.name AS genre_name, COUNT(*) AS genre_count
+FROM film
+INNER JOIN film_category ON film.film_id = film_category.film_id
+INNER JOIN category ON film_category.category_id = category.category_id
+GROUP BY category.name
            "
            )
 ```
 
-Below I will find which genre has the category_id of 15:
+Join the the tables of film, film_category, and category to count the number of movies in each genre using genre_count and group by the cateogry.name to get the resutling table below.
+
+Below is the resulting table from the above query and I will find the max to get the most popular genre:
 
 ```{r}
-dbGetQuery(sakila,"
-  SELECT category.name AS genre_count
-      FROM category
-      WHERE category.category_id = 15
-           "
-           )
+count
+count[which.max(count$genre_count),]
 ```
 
-Above, we can see that the category_id of the most popular genre of the films in this database is sports.
+Above, we can see that the category_id of the most popular genre of the films in this database is sports with 74 movies that have the genre.
 
 Below, I will answer the same question with a single query:
 
