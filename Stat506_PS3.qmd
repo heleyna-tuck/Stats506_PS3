@@ -64,13 +64,13 @@ dbGetQuery(sakila, "SELECT language_id from language")
 
 ```{r}
 dbGetQuery(sakila,"
-SELECT language.name AS most_common_language, COUNT(*) AS film_count
-FROM film
-INNER JOIN language ON film.language_id = language.language_id
-WHERE language.name != 'English'
-GROUP BY language.name
-ORDER BY film_count DESC
-LIMIT 1
+  SELECT language.name AS most_common_language, COUNT(*) AS film_count
+    FROM film
+      INNER JOIN language ON film.language_id = language.language_id
+    WHERE language.name != 'English'
+    GROUP BY language.name
+    ORDER BY film_count DESC
+    LIMIT 1
            "
            )
 ```
@@ -92,11 +92,11 @@ dbGetQuery(sakila, "SELECT name FROM category")
 
 ```{r}
 count <- dbGetQuery(sakila,"
-SELECT category.name AS genre_name, COUNT(*) AS genre_count
-FROM film
-INNER JOIN film_category ON film.film_id = film_category.film_id
-INNER JOIN category ON film_category.category_id = category.category_id
-GROUP BY category.name
+  SELECT category.name AS genre_name, COUNT(*) AS genre_count
+    FROM film
+      INNER JOIN film_category ON film.film_id = film_category.film_id
+      INNER JOIN category ON film_category.category_id = category.category_id
+  GROUP BY category.name
            "
            )
 ```
@@ -116,13 +116,13 @@ Below, I will answer the same question with a single query:
 
 ```{r}
 dbGetQuery(sakila, "
-SELECT category.name AS most_common_genre, COUNT(*) AS movie_count
-FROM film
-INNER JOIN film_category ON film.film_id = film_category.film_id
-INNER JOIN category ON film_category.category_id = category.category_id
-GROUP BY category.name
-ORDER BY movie_count DESC
-LIMIT 1
+  SELECT category.name AS most_common_genre, COUNT(*) AS movie_count
+    FROM film
+      INNER JOIN film_category ON film.film_id = film_category.film_id
+      INNER JOIN category ON film_category.category_id = category.category_id
+    GROUP BY category.name
+    ORDER BY movie_count DESC
+    LIMIT 1
 ")
 ```
 
@@ -137,11 +137,11 @@ Below I will solve the question using the first way described: Using SQL query o
 ```{r}
 customer_data <- dbGetQuery(sakila, "
   SELECT country.country, COUNT(*) AS customer_count
-  FROM country
-  INNER JOIN city ON country.country_id = city.country_id
-  INNER JOIN address ON city.city_id = address.city_id
-  INNER JOIN customer ON address.address_id = customer.address_id
-  GROUP BY country.country
+    FROM country
+        INNER JOIN city ON country.country_id = city.country_id
+        INNER JOIN address ON city.city_id = address.city_id
+        INNER JOIN customer ON address.address_id = customer.address_id
+    GROUP BY country.country
                             ")
 ```
 
@@ -162,13 +162,13 @@ Below I will answer the question with a single SQL query:
 
 ```{r}
 dbGetQuery(sakila, "
-SELECT country.country, COUNT(*) AS customer_count 
-FROM country
-INNER JOIN city ON country.country_id = city.country_id
-INNER JOIN address ON city.city_id = address.city_id
-INNER JOIN customer ON address.address_id = customer.address_id
-GROUP BY country.country
-HAVING customer_count = 9
+  SELECT country.country, COUNT(*) AS customer_count 
+    FROM country
+      INNER JOIN city ON country.country_id = city.country_id
+      INNER JOIN address ON city.city_id = address.city_id
+      INNER JOIN customer ON address.address_id = customer.address_id
+    GROUP BY country.country
+    HAVING customer_count = 9
            ")
 ```
 
