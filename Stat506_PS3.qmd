@@ -290,14 +290,27 @@ observed_frequencies <- observed_frequencies/sum(observed_frequencies)
 observed_frequencies
 
 # Calculate the expected frequencies according to Benford's Law
-expected_frequencies <- log10(1 + 1/(1:9))
-expected_frequencies
+expected_freq <- log10(1 + 1/(1:9))
+expected_freq
 ```
 
 As we can see above, the leading digits of the apartment numbers do not satisfy benford's law because the frequencies do not match up. In fact, the leading digit frequency in the data is pretty even between all numbers. Therefore, because Benford's law is said to be an observation on many real-life sets of numberical data, I would say the numbers would not pass as real data.
 
 ### Part F: Repeat your analysis of Benford's law on the *last* digit of the street number (E.g. if your address is "123 Main St #25", your street number is "123".)
 
-```{r}
+Below, I will do something similar to part (e) except instead of extracting the leading digits of the aparment numbers I will extract the last digit of the street numbers and compare it to the same Benford's law distribution:
 
+```{r}
+st_num <- gsub("^(\\d+).*", "\\1", us_500$address)
+#get the last digit using the nchar() function to find the length of each street number:
+last_digits <- substr(st_num, nchar(st_num), nchar(st_num))
+#Convert into a table:
+last_digits <- table(last_digits)
+#Benford's law is only on numbers 1-9 so take out 0 column:
+last_digits <- last_digits[2:10]
+last_digits_freq <- last_digits/sum(last_digits)
+last_digits_freq
+expected_freq
 ```
+
+Again, similar to part (e) we can observe that the frequencies of the last digit are about the same through all numbers 1-9 so they do not follow Benford's Law. Because of the same reason stated in part (e) these numbers would not pass as real data.
