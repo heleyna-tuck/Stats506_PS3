@@ -258,9 +258,19 @@ Above, get a list of all the area codes from both the phone1 and phone2 variable
 
 ### Part D: Produce a histogram of the log of the apartment numbers for all addresses. (You may assume any number after the street is an apartment number.)
 
-```{r}
+Below I will extract the log of the apartment numbers by first extracting the apartment number from the address variable using gsub() and takes any number after \# and then taking the log of each number. I will then generate a histogram.
 
+```{r}
+apartment_numbers <- gsub(".*#(\\d+).*|.*", "\\1", us_500$address)
+apartment_numbers <- as.numeric(apartment_numbers)
+log_apartment_numbers <- log(apartment_numbers)
+
+#Generate Historgram
+hist(log_apartment_numbers, main = "Histogram of Log(Apartment Numbers)",
+     xlab = "Log(Apartment Numbers)", ylab = "Frequency")
 ```
+
+Above is a histogram of the log of the apartment numbers for all of the addresses.
 
 ### Part E: Benford's law is an observation about the distribution of the leading digit of real numerical data. Examine whether the apartment numbers appear to follow Benford's law. Do you thing the apartment numbers would pass as real data? 
 
