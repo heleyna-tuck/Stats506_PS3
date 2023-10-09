@@ -395,6 +395,8 @@ end of do-file
  
 ```
 
+Resource: http://repec.org/bocode/e/estout/advanced.html
+
 ### Part D:
 
 From the third model from the previous part, I will discuss whether the *odds* of men and women being wears of glasses/contact lenses for distance vision differ. I will test whether the *proportion* of wearers of glasses/contact lenses for distance vision differs between men and women. I will include the results of the test and its interpretation.
@@ -453,7 +455,7 @@ end of do-file
 end of do-file
 ```
 
-Above we can see that the odds ratio coefficient for gender is about 0.596. This means that if
+Above we can see that the odds ratio coefficient for gender is about 0.596. This means that the odds of success are fairly even between the two genders. In other words, men and women are about equally as likely to need glasses/contacts for distance vision with men having slightly higher odds. Above, we can look into this further with the proportion of men and women wearing glass/contacts for distance vision, similar to part (b). We can see that men (1) have a higher proportion of wearing glass/contacts for distance vision with a proportion of about 63%. Whereas, females have a slightly lower proportion of about 53%. This supports our conclusion of the logistic model, that males have a slightly higher odds of having glasses/contacts for distance vision compared to females.
 
 # Problem 2 - Sakila
 
