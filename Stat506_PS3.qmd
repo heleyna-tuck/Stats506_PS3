@@ -12,15 +12,235 @@ editor: visual
 
 I will download the VIX_D file and DEMO_D file. I will merge the two files to create a single Stata dataset, using the SEQN variable for merging. I will keep only records which match. Below I will print my total size, showing that it is now 6,980.
 
+Save files as .dta files below:
+
 ```         
+. do "C:\Users\heleyna\AppData\Local\Temp\2\STD2ce8_000000.tmp"
+
+. import sasxport5 "C:\Users\heleyna\Downloads\VIX_D.XPT", clear
+
+. save "C:\Users\heleyna\Downloads\VIX_D.dta", replace
+file C:\Users\heleyna\Downloads\VIX_D.dta saved
+
+
+
+
+. do "C:\Users\heleyna\AppData\Local\Temp\2\STD2ce8_000000.tmp"
+
+. import sasxport5 "C:\Users\heleyna\Downloads\DEMO_D.XPT", clear
+
+. save "C:\Users\heleyna\Downloads\DEMO_D.dta", replace
+file C:\Users\heleyna\Downloads\DEMO_D.dta saved
 ```
+
+Merge the files using merge function and the seqn variable:
+
+```         
+. merge 1:1 seqn using "C:\Users\heleyna\Downloads\DEMO_D.dta"
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         3,368
+        from master                         0  (_merge==1)
+        from using                      3,368  (_merge==2)
+
+    Matched                             6,980  (_merge==3)
+    -----------------------------------------
+
+
+. keep if _merge ==  3
+(3,368 observations deleted)
+
+
+. summarize
+
+    Variable |        Obs        Mean    Std. dev.       Min        Max
+-------------+---------------------------------------------------------
+        seqn |      6,980    36310.59    2972.943      31129      41474
+      viq110 |      6,558           2           0          2          2
+      viq121 |          0
+      viq130 |      6,558    1.999848    .0123485          1          2
+      viq141 |          1           1           .          1          1
+-------------+---------------------------------------------------------
+      viq150 |      1,998    1.151151    .3582858          1          2
+      viq160 |      1,696    1.106722    .3088502          1          2
+      viq170 |      1,515    1.021782    .1504752          1          3
+      vixnc1 |      1,998    4.229229    .9486076          0          8
+      vixnc2 |      1,998    16.77828    5.140625          1         88
+-------------+---------------------------------------------------------
+      viq180 |      6,547    1.996334    .2986659          1          9
+      viq191 |         94     2.87234    .8454056          1          9
+      viq200 |      6,547    1.949748    .2709217          1          9
+      viq211 |        350    2.628571    1.091402          1          9
+      viq220 |      6,547    1.579808    .5106639          1          9
+-------------+---------------------------------------------------------
+      viq230 |      2,765    1.139241    .3462599          1          2
+      viq240 |      2,380    1.201261    .4485258          1          3
+      viq250 |      1,997    1.003005    .0547447          1          2
+      vixprs |      1,992    .6660392     13.5642     -14.25         88
+      vixprc |      1,991    2.861361    12.98109          0         88
+-------------+---------------------------------------------------------
+      vixpra |      1,992    94.28815     136.757          0        888
+      vixpls |      1,992    .6684237    13.56997      -14.5         88
+      vixplc |      1,992    2.793047    12.83935          0         88
+      vixpla |      1,992    93.41566    135.7645          0        888
+     vixocmt |         43           3    1.676163          1          7
+-------------+---------------------------------------------------------
+     vixorsm |      6,527    1.720185    15.61159        -20         88
+     vixorcm |      6,524    3.526697    15.15976          0         88
+     vixoram |      6,527    106.9364    151.4863          0        888
+     vidorfm |      6,363    8.685494    .6904877          5          9
+     vixolsm |      6,527    1.958606    16.14518      -21.5         88
+-------------+---------------------------------------------------------
+     vixolcm |      6,524    3.724323    15.69011          0         88
+     vixolam |      6,527    115.8351    154.4063          0        888
+     vidolfm |      6,384    8.691729    .6814711          5          9
+     vixkrm1 |      6,527    9.045934     9.75318       6.74         88
+     vixkrd1 |      6,527     43.7668     5.69027       34.5         88
+-------------+---------------------------------------------------------
+     vixkrg1 |      6,527    102.6309    119.0019          0        888
+     vixkrm2 |      6,527    8.876876    9.774139       4.96         88
+     vixkrd2 |      6,527    44.72386    5.618084         36         88
+     vixkrg2 |      6,527      98.315     104.003          0        888
+     vixkrmm |      6,527    8.963873    9.763078       6.39         88
+-------------+---------------------------------------------------------
+     vixkrdm |      6,527    44.22309    5.635897      35.75         88
+     vixkrcd |      6,527    2.274431    10.62343      -5.75         88
+     vixkrcg |      6,527      98.315     104.003          0        888
+     vixklm1 |      6,527    8.658462    8.086338       6.36         88
+     vixkld1 |      6,527    43.59206    4.807938      34.75         88
+-------------+---------------------------------------------------------
+     vixklg1 |      6,527    104.0095    105.7919          0        888
+     vixklm2 |      6,527    8.486896    8.103957       5.15         88
+     vixkld2 |      6,527    44.56741    4.774262       36.5         88
+     vixklg2 |      6,527    94.89505    88.45986          0        888
+     vixklmm |      6,527    8.575145    8.094512        5.8         88
+-------------+---------------------------------------------------------
+     vixkldm |      6,527    44.05496    4.764936      36.25         88
+     vixklcd |      6,527    1.874388    8.825804       -5.5         88
+     vixklcg |      6,527    94.89505    88.45986          0        888
+      vidrva |      6,486    39.34197    72.71014         20        666
+      vidlva |      6,478    39.53442    73.81002         20        666
+-------------+---------------------------------------------------------
+     vidrova |      1,870    44.83583    87.62029         25        666
+     vidlova |      1,852    44.57289    88.61358         25        666
+    sddsrvyr |      6,980           4           0          4          4
+    ridstatr |      6,980           2           0          2          2
+    ridexmon |      6,980    1.522779    .4995166          1          2
+-------------+---------------------------------------------------------
+    riagendr |      6,980     1.51533    .4998008          1          2
+    ridageyr |      6,980    37.87894    21.89424         12         85
+    ridagemn |      6,832    447.6957    251.9285        144       1019
+    ridageex |      6,813    448.4411    251.8224        144       1019
+    ridreth1 |      6,980    2.839255    1.184369          1          5
+-------------+---------------------------------------------------------
+    dmqmilit |      5,603    1.881671    .3470042          1          7
+     dmdborn |      6,980    1.266905    .5946404          1          7
+    dmdcitzn |      6,980    1.139398    .3761338          1          7
+    dmdyrsus |      1,337    6.413613    13.61473          1         99
+    dmdeduc3 |      2,207    10.22202    7.804479          4         99
+-------------+---------------------------------------------------------
+    dmdeduc2 |      4,773    3.282003    1.297236          1          9
+    dmdschol |      2,204    1.427405    .7134607          1          3
+    dmdmartl |      6,430    3.159253    3.211838          1         99
+    dmdhhsiz |      6,980     3.50086    1.717679          1          7
+    dmdfmsiz |      6,980    3.341261    1.757921          1          7
+-------------+---------------------------------------------------------
+    indhhinc |      6,904    9.121379    12.86505          1         99
+    indfminc |      6,916    8.701128    12.35381          1         99
+    indfmpir |      6,638    2.512761    1.595499          0          5
+    ridexprg |      2,871    1.906653     .395525          1          3
+    dmdhrgnd |      6,980    1.445702    .4970786          1          2
+-------------+---------------------------------------------------------
+    dmdhrage |      6,980    46.79599    16.77864         17         85
+    dmdhrbrn |      6,776    1.325708    .6517829          1          9
+    dmdhredu |      6,776    3.280992    1.345814          1          9
+    dmdhrmar |      6,827    2.565109    4.838254          1         77
+    dmdhsedu |      3,620    3.334807    1.364514          1          9
+-------------+---------------------------------------------------------
+     sialang |      6,978    1.125537     .331351          1          2
+    siaproxy |      6,978    1.838492    .3680249          1          2
+    siaintrp |      6,978    1.979937    .1402261          1          2
+     fialang |      6,913     1.08578    .2800598          1          2
+    fiaproxy |      6,913    1.997975    .0449595          1          2
+-------------+---------------------------------------------------------
+    fiaintrp |      6,913    1.983075    .1289984          1          2
+     mialang |      6,415    1.094934    .2931463          1          2
+    miaproxy |      6,415    1.992362      .08707          1          2
+    miaintrp |      6,415    1.997194    .0529007          1          2
+     aialang |      6,599    1.097287    .2963713          1          2
+-------------+---------------------------------------------------------
+    wtint2yr |      6,980    33615.14    29506.53   1339.047   152162.4
+    wtmec2yr |      6,980    34899.82    30495.23   1363.174   156152.2
+     sdmvpsu |      6,980    1.505874    .5000013          1          2
+    sdmvstra |      6,980    50.74542    4.286531         44         58
+      _merge |      6,980           3           0          3          3
+```
+
+Above, we can see that the matched observations are under merge = 3, so I kept all the observations that matched, which gives the desired length of 6,980.
+
+Resource: https://www.stata.com/manuals/dmerge.pdf
 
 ### Part B:
 
-Without fitting any models, I will estimate the proportion of respondents within each 10-year age bracket (eg. 0-9, 10-19, 20-29, etc) who wear glasses/contact lenses for distance vision. I will produce a nice table with the results below. (There was hint)
+Without fitting any models, I will estimate the proportion of respondents within each 10-year age bracket (eg. 0-9, 10-19, 20-29, etc) who wear glasses/contact lenses for distance vision (viq220). I will produce a nice table with the results below. (There was hint)
+
+Below is my output, I made an age group variable that separated each age group by intervals of 10. I used tabulate to get the desired proportions for each age group.
 
 ```         
+. do "C:\Users\heleyna\AppData\Local\Temp\1\STD2440_000000.tmp"
+
+. gen age_group = floor((ridageyr)/10)*10
+
+. tabulate age_group viq220, row
+
++----------------+
+| Key            |
+|----------------|
+|   frequency    |
+| row percentage |
++----------------+
+
+           | Glasses/contact lenses worn for
+           |             distance
+ age_group |         1          2          9 |     Total
+-----------+---------------------------------+----------
+        10 |       670      1,418          0 |     2,088 
+           |     32.09      67.91       0.00 |    100.00 
+-----------+---------------------------------+----------
+        20 |       306        631          2 |       939 
+           |     32.59      67.20       0.21 |    100.00 
+-----------+---------------------------------+----------
+        30 |       269        481          0 |       750 
+           |     35.87      64.13       0.00 |    100.00 
+-----------+---------------------------------+----------
+        40 |       286        487          0 |       773 
+           |     37.00      63.00       0.00 |    100.00 
+-----------+---------------------------------+----------
+        50 |       335        274          0 |       609 
+           |     55.01      44.99       0.00 |    100.00 
+-----------+---------------------------------+----------
+        60 |       392        238          0 |       630 
+           |     62.22      37.78       0.00 |    100.00 
+-----------+---------------------------------+----------
+        70 |       299        148          0 |       447 
+           |     66.89      33.11       0.00 |    100.00 
+-----------+---------------------------------+----------
+        80 |       208        103          0 |       311 
+           |     66.88      33.12       0.00 |    100.00 
+-----------+---------------------------------+----------
+     Total |     2,765      3,780          2 |     6,547 
+           |     42.23      57.74       0.03 |    100.00 
+
+. 
+end of do-file
+
+. 
 ```
+
+Above we can observe that the trend follows as expected. 1 being that someone wears glasses/contacts for distance and 2 being they do not. 9 means they don't know. The It trends the way we'd expect because the older people get the more likely they will be wearing glasses because the proportion of 1's goes up from about 32 percent to 66 percent.
+
+Resource: https://www.stata.com/manuals/rtabulateoneway.pdf
 
 ### Part C:
 
@@ -32,15 +252,208 @@ Fit three logistic regression models predicting whether a respondent wears glass
 
 Next, I will produce a table presenting the estimated odds ratios for the coefficients in each model along with the sample size for the model, the pseud-R\^2, and AIC values.
 
+This part is somewhat long so here is the code I used for this problem:
+
 ```         
+replace viq220=viq220-1
+ssc install estout
+eststo clear
+logistic viq220 ridageyr
+eststo model1_stats
+logistic viq220 ridageyr ridreth1 riagendr
+eststo model2_stats
+logistic viq220 ridageyr ridreth1 riagendr indfmpir
+eststo model3_stats
+
+esttab model1_stats model2_stats model3_stats, eform(0 1) stats(N aic r2_p)
+```
+
+Followed by the output. I will start with the first logistic regression predicting viq220 with age in years (ridageyr) and the lines above it:
+
+```         
+. do "C:\Users\heleyna\AppData\Local\Temp\1\STD2440_000000.tmp"
+
+. replace viq220=viq220-1
+(6,547 real changes made)
+
+. 
+end of do-file
+
+
+
+. do "C:\Users\heleyna\AppData\Local\Temp\1\STD2440_000000.tmp"
+
+. eststo clear
+
+. logistic viq220 ridageyr
+
+Logistic regression                                     Number of obs =  6,547
+                                                        LR chi2(1)    = 443.77
+                                                        Prob > chi2   = 0.0000
+Log likelihood = -4236.8396                             Pseudo R2     = 0.0498
+
+------------------------------------------------------------------------------
+      viq220 | Odds ratio   Std. err.      z    P>|z|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+    ridageyr |    .975618   .0011762   -20.48   0.000     .9733154    .9779259
+       _cons |   3.532101   .1887809    23.61   0.000     3.180818     3.92218
+------------------------------------------------------------------------------
+Note: _cons estimates baseline odds.
+
+. eststo model1_stats
+```
+
+Above fits the model and stores the results in model1_stats. Next I will show the output of the model predicting viq220 with ridageyr (age), ridreth1 (race), and riagendr (gender):
+
+```         
+. logistic viq220 ridageyr ridreth1 riagendr
+
+Logistic regression                                     Number of obs =  6,547
+                                                        LR chi2(3)    = 564.96
+                                                        Prob > chi2   = 0.0000
+Log likelihood = -4176.2454                             Pseudo R2     = 0.0634
+
+------------------------------------------------------------------------------
+      viq220 | Odds ratio   Std. err.      z    P>|z|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+    ridageyr |   .9752923   .0011937   -20.44   0.000     .9729555    .9776346
+    ridreth1 |   .8825469   .0198441    -5.56   0.000     .8444978    .9223103
+    riagendr |   .6082541   .0320237    -9.44   0.000     .5486187     .674372
+       _cons |   10.89136   1.298697    20.03   0.000     8.621525    13.75879
+------------------------------------------------------------------------------
+Note: _cons estimates baseline odds.
+
+. eststo model2_stats
+```
+
+Above, I stored the results in model2_stats. Next I will show the output of the logistic regression predicting viq220 with ridageyr, ridreth1, riagendr, and indfmpir (poverty income ratio):
+
+```         
+. logistic viq220 ridageyr ridreth1 riagendr indfmpir
+
+Logistic regression                                     Number of obs =  6,249
+                                                        LR chi2(4)    = 588.30
+                                                        Prob > chi2   = 0.0000
+Log likelihood = -3966.5106                             Pseudo R2     = 0.0690
+
+------------------------------------------------------------------------------
+      viq220 | Odds ratio   Std. err.      z    P>|z|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+    ridageyr |   .9765056   .0012324   -18.84   0.000     .9740932     .978924
+    ridreth1 |   .9109582   .0214614    -3.96   0.000     .8698511     .954008
+    riagendr |   .5960392   .0322544    -9.56   0.000     .5360588    .6627307
+    indfmpir |   .8673148   .0147488    -8.37   0.000     .8388842     .896709
+       _cons |    13.9329   1.789903    20.51   0.000     10.83156    17.92222
+------------------------------------------------------------------------------
+Note: _cons estimates baseline odds.
+
+. eststo model3_stats
+
+. 
+end of do-file
+```
+
+I stored the result of this model in model2_stats. Finally, I will create a table using esttab that displays the odds ratios for the coefficients in each model, along with the sample size for the model, the pseudo-R\^2, and AIC values:
+
+```         
+. do "C:\Users\heleyna\AppData\Local\Temp\1\STD2440_000000.tmp"
+
+. 
+. esttab model1_stats model2_stats model3_stats, constant eform stats(N aic r2_p)
+
+------------------------------------------------------------
+                      (1)             (2)             (3)   
+                   viq220          viq220          viq220   
+------------------------------------------------------------
+viq220                                                      
+ridageyr            0.976***        0.975***        0.977***
+                 (-20.48)        (-20.44)        (-18.84)   
+
+ridreth1                            0.883***        0.911***
+                                  (-5.56)         (-3.96)   
+
+riagendr                            0.608***        0.596***
+                                  (-9.44)         (-9.56)   
+
+indfmpir                                            0.867***
+                                                  (-8.37)   
+
+_cons               3.532***        10.89***        13.93***
+                  (23.61)         (20.03)         (20.51)   
+------------------------------------------------------------
+N                    6547            6547            6249   
+aic                8477.7          8360.5          7943.0   
+r2_p               0.0498          0.0634          0.0690   
+------------------------------------------------------------
+Exponentiated coefficients; t statistics in parentheses
+* p<0.05, ** p<0.01, *** p<0.001
+
+. 
+end of do-file
+
+. 
+ 
 ```
 
 ### Part D:
 
 From the third model from the previous part, I will discuss whether the *odds* of men and women being wears of glasses/contact lenses for distance vision differ. I will test whether the *proportion* of wearers of glasses/contact lenses for distance vision differs between men and women. I will include the results of the test and its interpretation.
 
+Below I will show the logistic regression for reference
+
 ```         
+. do "C:\Users\heleyna\AppData\Local\Temp\1\STD2440_000000.tmp"
+
+. logistic viq220 ridageyr ridreth1 riagendr indfmpir
+
+Logistic regression                                     Number of obs =  6,249
+                                                        LR chi2(4)    = 588.30
+                                                        Prob > chi2   = 0.0000
+Log likelihood = -3966.5106                             Pseudo R2     = 0.0690
+
+------------------------------------------------------------------------------
+      viq220 | Odds ratio   Std. err.      z    P>|z|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+    ridageyr |   .9765056   .0012324   -18.84   0.000     .9740932     .978924
+    ridreth1 |   .9109582   .0214614    -3.96   0.000     .8698511     .954008
+    riagendr |   .5960392   .0322544    -9.56   0.000     .5360588    .6627307
+    indfmpir |   .8673148   .0147488    -8.37   0.000     .8388842     .896709
+       _cons |    13.9329   1.789903    20.51   0.000     10.83156    17.92222
+------------------------------------------------------------------------------
+Note: _cons estimates baseline odds.
+
+. 
+end of do-file
+
+. do "C:\Users\heleyna\AppData\Local\Temp\1\STD2440_000000.tmp"
+
+. tabulate riagendr viq220, row
+
++----------------+
+| Key            |
+|----------------|
+|   frequency    |
+| row percentage |
++----------------+
+
+           | Glasses/contact lenses worn for
+           |             distance
+    Gender |         0          1          8 |     Total
+-----------+---------------------------------+----------
+         1 |     1,181      2,014          0 |     3,195 
+           |     36.96      63.04       0.00 |    100.00 
+-----------+---------------------------------+----------
+         2 |     1,584      1,766          2 |     3,352 
+           |     47.26      52.68       0.06 |    100.00 
+-----------+---------------------------------+----------
+     Total |     2,765      3,780          2 |     6,547 
+           |     42.23      57.74       0.03 |    100.00 
+
+. 
+end of do-file
 ```
+
+Above we can see that the odds ratio coefficient for gender is about 0.596. This means that if
 
 # Problem 2 - Sakila
 
@@ -142,7 +555,7 @@ We get the name of the genre with the category table using most_common_genre. We
 
 Above, in a single SQL query, I have also found that the most popular genre of film is sports with 74 movies.
 
-### Part C: Identify which country or countries have exactly 9 customers. Answer this with a single SQL query. 
+### Part C: Identify which country or countries have exactly 9 customers. Answer this with a single SQL query.
 
 Below I will solve the question using the first way described: Using SQL query or queries to extract the appropriate table(s), then use regular R to answer the question.
 
@@ -232,7 +645,7 @@ non_alphanum <- function(email){
 }
 ```
 
-Above, gsub() substitutes @ or . with nothing to make sure the grepl() function does not identify those as non-aphanumeric characters. grepl() checks if there is a non- alphanumeric character in the email.
+Above, gsub() substitutes \@ or . with nothing to make sure the grepl() function does not identify those as non-aphanumeric characters. grepl() checks if there is a non- alphanumeric character in the email.
 
 ```{r}
 non_alphanum_emails <- sapply(us_500$email, non_alphanum)
@@ -272,7 +685,7 @@ hist(log_apartment_numbers, main = "Histogram of Log(Apartment Numbers)",
 
 Above is a histogram of the log of the apartment numbers for all of the addresses.
 
-### Part E: Benford's law is an observation about the distribution of the leading digit of real numerical data. Examine whether the apartment numbers appear to follow Benford's law. Do you thing the apartment numbers would pass as real data? 
+### Part E: Benford's law is an observation about the distribution of the leading digit of real numerical data. Examine whether the apartment numbers appear to follow Benford's law. Do you thing the apartment numbers would pass as real data?
 
 Upon looking at the link for Benford's law the Probability of the leading digit:
 
